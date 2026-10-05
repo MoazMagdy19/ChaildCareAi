@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ChildCare AI — نفهم الطفل… ونساعده بشكل أفضل</title>
+  <meta name="description" content="نموذج تجريبي لتنظيم ملاحظات نمو الطفل ودعم أولياء الأمور والمختصين. ليس أداة تشخيص طبي.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">تخطَّ إلى المحتوى</a>
+
+  <div class="app">
+    <!-- ========== الشريط الجانبي ========== -->
+    <aside class="sidebar" id="sidebar" aria-label="القائمة الرئيسية">
+      <div class="brand">
+        <span class="brand-logo" aria-hidden="true">🧸</span>
+        <div>
+          <div class="brand-name">ChildCare AI</div>
+          <div class="brand-tag">نفهم الطفل… ونساعده بشكل أفضل</div>
+        </div>
+      </div>
+
+      <nav>
+        <ul class="nav-list">
+          <li><a class="nav-link" href="#home" data-nav="home"><span class="nav-ico" aria-hidden="true">🏠</span>الرئيسية</a></li>
+          <li><a class="nav-link" href="#profile" data-nav="profile"><span class="nav-ico" aria-hidden="true">👦</span>ملف الطفل</a></li>
+          <li><a class="nav-link" href="#observations" data-nav="observations"><span class="nav-ico" aria-hidden="true">📝</span>الملاحظات</a></li>
+          <li><a class="nav-link" href="#analysis" data-nav="analysis"><span class="nav-ico" aria-hidden="true">📊</span>التحليل</a></li>
+          <li><a class="nav-link" href="#followup" data-nav="followup"><span class="nav-ico" aria-hidden="true">📅</span>المتابعة<span class="nav-badge" id="notifBadge" hidden></span></a></li>
+          <li><a class="nav-link" href="#report" data-nav="report"><span class="nav-ico" aria-hidden="true">📄</span>التقارير</a></li>
+          <li class="nav-sep" aria-hidden="true"></li>
+          <li><a class="nav-link" href="#specialist" data-nav="specialist"><span class="nav-ico" aria-hidden="true">🩺</span>عرض المختص</a></li>
+          <li><a class="nav-link" href="#camera" data-nav="camera"><span class="nav-ico" aria-hidden="true">🎥</span>ملاحظة بالفيديو</a></li>
+          <li><a class="nav-link" href="#settings" data-nav="settings"><span class="nav-ico" aria-hidden="true">⚙️</span>الإعدادات</a></li>
+        </ul>
+      </nav>
+
+      <p class="sidebar-note">نموذج تجريبي (Prototype) — لا يوجد خادم ولا قاعدة بيانات، والبيانات محفوظة في متصفحك فقط.</p>
+    </aside>
+    <div class="backdrop" id="backdrop" hidden></div>
+
+    <div class="main-wrap">
+      <header class="topbar no-print">
+        <button class="menu-btn" id="menuBtn" type="button" aria-label="فتح القائمة" aria-controls="sidebar" aria-expanded="false">☰</button>
+        <div class="topbar-title">
+          <strong>ChildCare AI</strong>
+          <span>نفهم الطفل… ونساعده بشكل أفضل</span>
+        </div>
+        <div class="child-chip" aria-live="polite"><span aria-hidden="true">👦</span> <span id="chipName">—</span></div>
+      </header>
+
+      <div class="disclaimer-strip" role="note">
+        ⚕️ نتائج التطبيق <strong>مؤشرات أولية</strong> لدعم ولي الأمر والمختص، و<strong>لا تمثل تشخيصًا طبيًا</strong>.
+      </div>
+
+      <main id="main" tabindex="-1">
+
+        <!-- ========== 1) الرئيسية ========== -->
+        <section class="page" id="page-home" hidden aria-labelledby="h-home">
+          <h1 id="h-home" tabindex="-1">لوحة المتابعة</h1>
+
+          <div class="card hero-card">
+            <div class="avatar" aria-hidden="true">👦</div>
+            <div class="hero-info">
+              <div class="muted">ملف الطفل</div>
+              <h2 class="hero-name">اسم الطفل: <span id="dashName">—</span></h2>
+              <p class="hero-age">العمر: <span id="dashAge">—</span></p>
+              <span class="badge" id="dashStatus">—</span>
+            </div>
+          </div>
+
+          <div class="stats-grid" aria-label="إحصائيات سريعة">
+            <div class="stat"><span class="stat-ico" aria-hidden="true">📝</span><div class="stat-val" id="statNotes">0</div><div class="stat-lab">عدد الملاحظات</div></div>
+            <div class="stat"><span class="stat-ico" aria-hidden="true">🧑‍⚕️</span><div class="stat-val" id="statSessions">0</div><div class="stat-lab">عدد الجلسات</div></div>
+            <div class="stat"><span class="stat-ico" aria-hidden="true">🕒</span><div class="stat-val" id="statLast">—</div><div class="stat-lab">آخر تقييم</div></div>
+            <div class="stat"><span class="stat-ico" aria-hidden="true">📈</span><div class="stat-val" id="statLevel">—</div><div class="stat-lab">مستوى المتابعة</div></div>
+          </div>
+
+          <div class="actions-grid">
+            <button class="action" type="button" data-go="profile"><span class="action-ico" aria-hidden="true">👦</span>ملف الطفل</button>
+            <button class="action" type="button" data-go="observations"><span class="action-ico" aria-hidden="true">📝</span>إضافة ملاحظة</button>
+            <button class="action" type="button" data-go="analysis"><span class="action-ico" aria-hidden="true">📊</span>تحليل الحالة</button>
+            <button class="action" type="button" data-go="followup"><span class="action-ico" aria-hidden="true">📅</span>المتابعة</button>
+          </div>
+
+          <div class="card">
+            <h2>كيف يعمل التطبيق؟</h2>
+            <p class="muted">رحلة البيانات من ولي الأمر إلى المختص — والقرار السريري يبقى دائمًا بيد المختص.</p>
+            <ol class="flow" id="flowSteps"></ol>
+          </div>
+        </section>
+
+        <!-- ========== 2) ملف الطفل ========== -->
+        <section class="page" id="page-profile" hidden aria-labelledby="h-profile">
+          <h1 id="h-profile" tabindex="-1">ملف الطفل</h1>
+
+          <div class="card profile-card">
+            <div class="avatar avatar-lg" role="img" aria-label="صورة الطفل (مكان مخصص للصورة)">
+              <span aria-hidden="true">👦</span>
+              <small>صورة الطفل</small>
+            </div>
+            <dl class="profile-list">
+              <div><dt>اسم الطفل</dt><dd id="pfName">—</dd></div>
+              <div><dt>العمر</dt><dd id="pfAge">—</dd></div>
+              <div><dt>تاريخ الميلاد</dt><dd id="pfBirth">—</dd></div>
+              <div class="wide"><dt>ملاحظات عامة</dt><dd id="pfNotes">—</dd></div>
+            </dl>
+          </div>
+
+          <div class="card">
+            <h2>✏️ إنشاء / تعديل ملف الطفل</h2>
+            <form id="profileForm" novalidate>
+              <div class="form-grid">
+                <div class="field">
+                  <label for="childName">اسم الطفل</label>
+                  <input id="childName" type="text" autocomplete="off" placeholder="مثال: آدم محمد" required>
+                </div>
+                <div class="field">
+                  <label for="birthDate">تاريخ الميلاد</label>
+                  <input id="birthDate" type="date" required>
+                </div>
+                <div class="field wide">
+                  <label for="generalNotes">ملاحظات عامة</label>
+                  <textarea id="generalNotes" rows="3" placeholder="مثال: ما يحبه الطفل، روتينه اليومي، أي معلومات عامة تهم المختص…"></textarea>
+                </div>
+              </div>
+              <p class="form-error" id="profileError" role="alert" hidden></p>
+              <button class="btn" type="submit">💾 حفظ ملف الطفل</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <h2>معلومات النمو</h2>
+            <p class="notice">ℹ️ هذه مستويات وصفية تجريبية لتنظيم المتابعة فقط، <strong>وليست درجات أو نتائج طبية</strong>.</p>
+            <ul class="dev-list" id="devList"></ul>
+          </div>
+        </section>
+
+        <!-- ========== 3 + 4) الملاحظات + السجل الزمني ========== -->
+        <section class="page" id="page-observations" hidden aria-labelledby="h-observations">
+          <h1 id="h-observations" tabindex="-1">الملاحظات</h1>
+
+          <div class="card">
+            <h2>📝 إضافة ملاحظة جديدة</h2>
+            <form id="obsForm" novalidate>
+              <div class="form-grid">
+                <div class="field">
+                  <label for="obsType">نوع الملاحظة</label>
+                  <select id="obsType" required></select>
+                </div>
+                <div class="field">
+                  <label for="obsEnv">الموقف</label>
+                  <select id="obsEnv" required></select>
+                </div>
+                <div class="field">
+                  <label for="obsTime">وقت الملاحظة</label>
+                  <input id="obsTime" type="datetime-local" required>
+                </div>
+                <div class="field wide">
+                  <label for="obsText">وصف الملاحظة</label>
+                  <textarea id="obsText" rows="4" placeholder="اكتب ما لاحظته على الطفل…" required></textarea>
+                </div>
+              </div>
+              <p class="form-error" id="obsError" role="alert" hidden></p>
+              <button class="btn" type="submit">✅ حفظ الملاحظة</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <h2>🗓️ السجل الزمني للملاحظات</h2>
+              <div class="field inline">
+                <label for="timelineFilter">عرض:</label>
+                <select id="timelineFilter"></select>
+              </div>
+            </div>
+            <ol class="timeline" id="timeline"></ol>
+          </div>
+        </section>
+
+        <!-- ========== 5) التحليل الذكي ========== -->
+        <section class="page" id="page-analysis" hidden aria-labelledby="h-analysis">
+          <h1 id="h-analysis" tabindex="-1">التحليل الذكي</h1>
+
+          <div class="card">
+            <p class="notice warn">⚠️ التحليل التالي <strong>محاكى</strong> (بيانات تجريبية وقواعد بسيطة وليس نموذج ذكاء اصطناعي حقيقي). النتائج مؤشرات أولية <strong>لا تمثل تشخيصًا طبيًا</strong>.</p>
+            <button class="btn btn-lg" id="analyzeBtn" type="button">🤖 تحليل بيانات الطفل</button>
+
+            <div class="loading" id="analysisLoading" role="status" aria-live="polite" hidden>
+              <div class="spinner" aria-hidden="true"></div>
+              <p>جاري تحليل الملاحظات…</p>
+              <div class="loading-bar" aria-hidden="true"><span></span></div>
+            </div>
+          </div>
+
+          <div id="analysisResult" hidden>
+            <div class="card">
+              <h2>مؤشرات أولية</h2>
+              <p class="muted" id="analysisMeta"></p>
+              <p class="notice" id="analysisStale" hidden>🔄 أُضيفت ملاحظات بعد آخر تحليل. أعد التحليل لتحديث المؤشرات.</p>
+              <div id="insightGrid"></div>
+            </div>
+
+            <div class="card">
+              <h2>💡 ملاحظات مقترحة</h2>
+              <ul class="suggest-list" id="suggestList"></ul>
+              <p class="disclaimer-box">لا تمثل هذه النتائج تشخيصًا طبيًا. القرار السريري يعود إلى المختص وحده.</p>
+              <div class="btn-row no-print">
+                <button class="btn btn-ghost" type="button" data-go="report">📄 عرض تقرير النمو</button>
+                <button class="btn btn-ghost" type="button" data-go="specialist">🩺 مراجعة المختص</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== المتابعة + 8) الإشعارات ========== -->
+        <section class="page" id="page-followup" hidden aria-labelledby="h-followup">
+          <h1 id="h-followup" tabindex="-1">المتابعة</h1>
+
+          <div class="card follow-card">
+            <div>
+              <h2>📅 المتابعة الأسبوعية</h2>
+              <p id="followLast" class="muted">—</p>
+              <p><strong id="followNext">—</strong></p>
+            </div>
+            <button class="btn" id="logFollowup" type="button">✔️ تسجيل متابعة اليوم</button>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <h2>🔔 إشعارات ولي الأمر</h2>
+              <button class="btn btn-ghost btn-sm" id="markAllRead" type="button">تعليم الكل كمقروء</button>
+            </div>
+            <ul class="notif-list" id="notifList"></ul>
+          </div>
+        </section>
+
+        <!-- ========== 6) تقرير النمو ========== -->
+        <section class="page" id="page-report" hidden aria-labelledby="h-report">
+          <h1 id="h-report" tabindex="-1" class="no-print">التقارير</h1>
+
+          <div class="card report-card" id="reportCard">
+            <header class="report-head">
+              <div>
+                <h2>Child Development Overview — نظرة عامة على نمو الطفل</h2>
+                <p class="muted">الطفل: <strong id="rpName">—</strong> · العمر: <span id="rpAge">—</span> · تاريخ التقرير: <span id="rpDate">—</span></p>
+              </div>
+              <span class="badge badge-warn">تقرير تجريبي</span>
+            </header>
+
+            <p class="notice">🧪 <strong>تقرير تجريبي مبني على البيانات المسجلة</strong> — مؤشرات أولية لدعم ولي الأمر والمختص، وليس تشخيصًا طبيًا.</p>
+
+            <div class="report-grid">
+              <ul class="dev-list" id="reportBars"></ul>
+              <figure class="chart-box">
+                <div id="reportChart"></div>
+                <figcaption class="muted">رسم بياني مبسّط للمستويات الوصفية</figcaption>
+              </figure>
+            </div>
+
+            <h3>ملخص الملاحظات المسجلة</h3>
+            <div class="chips" id="reportCounts"></div>
+
+            <h3>آخر تحليل (محاكى)</h3>
+            <div id="reportAnalysis" class="muted">—</div>
+
+            <p class="disclaimer-box">لا تمثل هذه النتائج تشخيصًا طبيًا. يرجى مناقشتها مع المختص.</p>
+          </div>
+
+          <div class="btn-row no-print">
+            <button class="btn" id="printBtn" type="button">🖨️ طباعة التقرير</button>
+          </div>
+        </section>
+
+        <!-- ========== 7) عرض المختص ========== -->
+        <section class="page" id="page-specialist" hidden aria-labelledby="h-specialist">
+          <h1 id="h-specialist" tabindex="-1">عرض المختص</h1>
+
+          <div class="card lock-card" id="specialistLock" hidden>
+            <div class="lock-ico" aria-hidden="true">🔒</div>
+            <h2>مشاركة البيانات غير مفعّلة</h2>
+            <p>لا تتم مشاركة بيانات الطفل مع المختص إلا بموافقة ولي الأمر.</p>
+            <div class="btn-row">
+              <button class="btn" id="spEnableShare" type="button">✅ أوافق على المشاركة مع المختص (محاكاة)</button>
+              <button class="btn btn-ghost" type="button" data-go="settings">⚙️ فتح الإعدادات</button>
+            </div>
+          </div>
+
+          <div id="specialistContent" hidden>
+            <div class="card">
+              <h2>👦 ملف الطفل</h2>
+              <div id="spChild" class="info-rows"></div>
+            </div>
+
+            <div class="card">
+              <h2>📝 أحدث الملاحظات</h2>
+              <ul class="obs-list" id="spObs"></ul>
+            </div>
+
+            <div class="card">
+              <h2>🤖 مؤشرات الذكاء الاصطناعي (محاكاة)</h2>
+              <div id="spInsights"></div>
+            </div>
+
+            <div class="card">
+              <h2>🎥 مقاطع الفيديو المسجلة (محاكاة)</h2>
+              <ul class="obs-list" id="spClips"></ul>
+            </div>
+
+            <div class="card">
+              <h2>🩺 ملاحظات المختص</h2>
+              <form id="spForm" novalidate>
+                <div class="field">
+                  <label for="spNote">ملاحظات المختص</label>
+                  <textarea id="spNote" rows="4" placeholder="إضافة ملاحظات المختص…"></textarea>
+                </div>
+                <p class="form-error" id="spError" role="alert" hidden></p>
+                <button class="btn" type="submit">💾 حفظ الملاحظات</button>
+              </form>
+              <ul class="obs-list spaced" id="spNotesList"></ul>
+              <p class="disclaimer-box">المختص هو من يتخذ القرار السريري. مؤشرات التطبيق مساعدة فقط.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 10) ملاحظة بالفيديو ========== -->
+        <section class="page" id="page-camera" hidden aria-labelledby="h-camera">
+          <h1 id="h-camera" tabindex="-1">ملاحظة بالفيديو</h1>
+
+          <div class="card">
+            <p class="notice">🎬 هذه <strong>محاكاة لواجهة الكاميرا فقط</strong>: لا يتم تشغيل كاميرا حقيقية، ولا تسجيل فيديو، ولا تحليل فيديو بالذكاء الاصطناعي.</p>
+
+            <div class="cam-stage" id="camStage" role="img" aria-label="مكان عرض الكاميرا">
+              <div class="cam-idle" id="camIdle"><span aria-hidden="true">📷</span><p>الكاميرا متوقفة</p></div>
+              <div class="cam-live" id="camLive" hidden>
+                <span class="rec"><i aria-hidden="true"></i> REC <b id="camTimer">00:00</b></span>
+                <span class="cam-face" aria-hidden="true">🧒</span>
+              </div>
+              <div class="cam-busy" id="camBusy" hidden><div class="spinner" aria-hidden="true"></div><p>جاري معالجة المقطع…</p></div>
+            </div>
+
+            <div class="btn-row">
+              <button class="btn" id="camStart" type="button">📹 تشغيل الكاميرا</button>
+              <button class="btn btn-accent" id="camAnalyze" type="button" disabled>تحليل</button>
+            </div>
+
+            <div class="card inner" id="camPerm" hidden>
+              <p>🔒 استخدام الكاميرا غير مسموح حاليًا. لا تتم مشاركة بيانات الطفل إلا بموافقة ولي الأمر.</p>
+              <button class="btn btn-ghost" id="camEnable" type="button">☑ السماح باستخدام الكاميرا (محاكاة)</button>
+            </div>
+
+            <div class="success-box" id="camResult" role="status" aria-live="polite" hidden>
+              <strong>✅ تم تسجيل المقطع بنجاح</strong>
+              <p>يمكن للمختص مراجعته.</p>
+              <small class="muted">(محاكاة فقط — لم يتم تسجيل أي فيديو حقيقي)</small>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>المقاطع المحفوظة (محاكاة)</h2>
+            <ul class="obs-list" id="clipList"></ul>
+          </div>
+        </section>
+
+        <!-- ========== 9) الإعدادات + الخصوصية ========== -->
+        <section class="page" id="page-settings" hidden aria-labelledby="h-settings">
+          <h1 id="h-settings" tabindex="-1">الإعدادات</h1>
+
+          <div class="card">
+            <h2>🔒 بيانات الطفل خاصة</h2>
+            <fieldset class="perm-set">
+              <legend>الصلاحيات</legend>
+              <label class="perm"><input type="checkbox" id="permGuardian"><span>السماح لولي الأمر بإدارة البيانات</span></label>
+              <label class="perm"><input type="checkbox" id="permShare"><span>مشاركة البيانات مع المختص</span></label>
+              <label class="perm"><input type="checkbox" id="permCamera"><span>السماح باستخدام الكاميرا</span></label>
+            </fieldset>
+            <p class="disclaimer-box">لا تتم مشاركة بيانات الطفل إلا بموافقة ولي الأمر.</p>
+          </div>
+
+          <div class="card">
+            <h2>🧪 بيانات العرض التجريبي</h2>
+            <p class="muted">البيانات محفوظة في متصفحك فقط (localStorage) ولا تُرسل إلى أي مكان.</p>
+            <div class="btn-row">
+              <button class="btn btn-ghost" id="resetDemo" type="button">↩️ استعادة البيانات التجريبية</button>
+              <button class="btn btn-ghost" id="resetEmpty" type="button">🆕 بدء ملف فارغ</button>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <footer class="footer no-print">ChildCare AI — نموذج تجريبي للمسابقة · لا يقدّم تشخيصًا طبيًا ولا يغني عن استشارة المختص.</footer>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <script src="script.js"></script>
+</body>
+</html>
